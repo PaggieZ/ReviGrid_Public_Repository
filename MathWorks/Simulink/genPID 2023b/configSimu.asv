@@ -6,22 +6,12 @@ COM = serialportlist;
 found = false;
 
 for i = 1:COM.size(2)
-    SP = serialport(COM(i), 115200, "Timeout", 2);
+    SP = serialport(COM(i), 115200);
     str = "Registering " + COM(i) + "...";
     disp(str);
     pause(1.5);
     SP.writeline("*ID?")
-    try
-        lastwarn('');
-        ID = readline(SP);
-        if(~isempty(lastwarn))
-            error();
-        end
-    catch
-        str = COM(i) + " is not generator.";
-        disp(str);
-        continue;
-    end
+    ID = readline(SP);
     ID = convertStringsToChars(ID);
     ID = ID(1:end - 1);
     if ID == "generator"
