@@ -231,7 +231,7 @@ void getAll(){
   int curLoad=(h[0]+h[1]+h[2]+h[3])*(load/MAX_LIGHT_LEVEL);
   Serial.println(-1*curLoad); //this is the current house load
   Serial.println(-1*curLoad); // this is the load allocated to the houses
-  Serial.println(0); // this is the difference between allocated and used 
+  Serial.println(-1*curLoad); // this is the difference between allocated and used 
   Serial.println(0); // this is the carbon value of the houses
   Serial.println(-1); // this means the houses are neither renewable or non-renewable
   // houseV=0;if(curLoad>0){houseV=120;}

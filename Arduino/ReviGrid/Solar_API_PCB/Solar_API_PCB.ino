@@ -33,7 +33,7 @@ byte solarPin = A5; // solar panel reading pin (analog), use A0 for older versio
 byte hallPin = 12; // hall effect sensor reading pin (digital)
 
 // the median filter library stores the last "nReads" elements of the window and calculates their median
-int nReads=20; // num of reads, window size of median filter
+int nReads=30; // num of reads, window size of median filter
 
 long panPos=0; // pan position of stepper motor
 long tPanPos=0;
@@ -65,8 +65,9 @@ unsigned long mRange=MAX_PAN_POS; // motor range, range of panPos
 char *commands[] = {"init","runScan","trackOn","trackOff","runIVScan",
                     "goHome","goMax","go1Q","go2Q","go3Q","go4Q",
                     "moveCW>1","moveCCW>1","moveCWR<2","moveCCWR<2","lookCCW","lookCW",
+                    "runCal",
                     "setSteps>1","setLoad>1",
-                    "setRange>1", "setDelay>1", "setSpeed>1",
+                    "setRange>1", "setDelay>1", "setSpeed>1", "setReads>1",
                     "getVal<1","getKW<1","getCarbon<1","getMax<1","getAll<7","getIV>1<2",
                     "getPos<1","getBusy<1", "getMaxPos<1", 
                     "on","off","eoc"};
@@ -223,6 +224,7 @@ void checkAction(bool checkAll) {
     else if(serialReceived=="setSteps"){setSteps();}  
     else if(serialReceived=="setDelay"){setDelay();}   
     else if(serialReceived=="setSpeed"){setSpeed();}
+    else if(serialReceived=="setReads"){setReads();}
     else if(serialReceived=="on"){on();}  
     else if(serialReceived=="off"){off();}  
     else if(serialReceived=="*ID?"){Serial.println("solartracker");}
@@ -245,8 +247,18 @@ void checkAction(bool checkAll) {
       else if(serialReceived=="lookCW"){lookCW();}
       else if(serialReceived=="trackOn"){atFlag=1;busyFlag=1;}
       else if(serialReceived=="getCommands"){getCommands();}
+      else if(serialReceived=="runCal"){runCal();}
     }
   }
+}
+
+void runCal() {
+  // set fdFlag
+  setReverse(); // set direction
+  findMaxPanPos();
+  
+  MAX_PAN_POS = EEPROM.read(2) + 400;
+  mRange = MAX_PAN_POS;
 }
 
 /*************************** clearArgArr *****************************/
@@ -382,11 +394,17 @@ void getAll(){
 float readSolar(){
   stopMot();
   float solarVal = 0;
-  for (int i = 0; i < nReads; i++){ // read solar panel for "nReads" times
-    // get median 
-    solarVal = medianFilter.AddValue(analogRead(solarPin));
+//   for (int i = 0; i < nReads; i++){ // read solar panel for "nReads" times
+//     // get median 
+//     solarVal = medianFilter.AddValue(analogRead(solarPin));
+//   }
+  double sum = 0;
+  for (int i = 0; i < nReads; i++) {
+    sum = sum + analogRead(5);
+    delay(1);
   }
-  solarVal = solarVal * onFlag;
+  double avg = sum/nReads;
+  solarVal = avg * onFlag;
   return solarVal;
 }
 
@@ -443,7 +461,7 @@ void getIV(){
   int dRes=(aRes/100000.0)*255;
   setRes(dRes);
   delay(200);
-  int a5=analogRead(5);
+  double a5=readSolar();
   float voltage5=float(a5/1023.0)*5.0;
   float mA=float(voltage5/res)*1000;
   if(mA>2.0){setRes(255);Serial.println("999");Serial.println("999");return;}
@@ -486,6 +504,17 @@ void setSteps(){
 
   nSteps=argArr[0].toInt();  
   nSteps = max(1, min(mRange, nSteps));
+}
+
+// sets the number of steps the runScan, lookCW and lookCCW use to rotate the panel
+// set the step size for each short distance movement
+// used in runScan, lookCCW, lookCW
+void setReads(){
+  int numOfArg = 1;
+  if (numOfArgAvail == 0) {readSerTO(numOfArg);}
+  // return when the number of arguments is insufficient.
+  if (numOfArgAvail < numOfArg) {return;}
+  nReads=argArr[0].toInt();  
 }
 
 void getVal(){
@@ -717,7 +746,7 @@ void  runIVScan(){
      j=max(min(255-s,255),0);
      float resistance=float((100000.0/256*j)+1000); 
      setRes(j);
-     int a5=analogRead(5);
+     float a5=readSolar();
      float voltage5=float(a5/1023.0)*5.0;
      float mA=(voltage5/resistance)*1000;
      if(mA>2.0){setRes(255);Serial.println("eod");Serial.println(s);return;}

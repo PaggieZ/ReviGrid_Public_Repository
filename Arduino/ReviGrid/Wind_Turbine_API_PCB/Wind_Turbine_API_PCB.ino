@@ -66,6 +66,7 @@ char *commands[] = {"init","runScan","trackOn","trackOff",
                     "goHome","goL","goF","goR","moveCW>1","moveCCW>1","moveCWR<2","moveCCWR<2","goMax",
                     "lookCW","lookCCW",
                     "setLoad>1","setRange>1","setDelay>1","setSteps>1",
+                    "runCal",
                     "getMax<1","getVal<1","getKW<1","getAll<7","getCarbon<1","getPos<1","getBusy", "getMaxPos<1",
                     "on","off","eoc"};
 
@@ -139,6 +140,16 @@ void setup() {
 
 void loop() { 
   checkAction(1);
+}
+
+
+void runCal() {
+  // set fdFlag
+  setReverse(); // set direction
+  findMaxPanPos();
+  
+  MAX_PAN_POS = EEPROM.read(2) + 400;
+  mRange = MAX_PAN_POS;
 }
 
 // returns maximum position that the solar panel can rotate to
@@ -286,6 +297,7 @@ void checkAction(bool checkAll) {
   else if(serialReceived=="goF"){goF();}
   else if(serialReceived=="goR"){goR();}
   else if(serialReceived=="runScan"){runScan();}
+  else if(serialReceived=="runCal"){runCal();}
   else if(serialReceived=="goMax"){goMax();}
   else if(serialReceived=="lookCW"){lookCW();}
   else if(serialReceived=="lookCCW"){lookCCW();}
