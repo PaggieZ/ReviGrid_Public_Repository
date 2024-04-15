@@ -1,0 +1,9 @@
+* Grid Created
+   -COM1: windturbine
+   -COM22: generator
+   -COM23: solartracker
+   -COM24: fan
+   -COM28: houseload
+* Plot started
+* Plot paused
+* grid: off

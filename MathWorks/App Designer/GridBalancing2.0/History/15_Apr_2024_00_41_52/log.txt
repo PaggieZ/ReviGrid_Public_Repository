@@ -1,0 +1,6 @@
+* Grid Created
+   -COM22: fan
+   -COM23: solartracker
+   -COM24: houseload
+   -COM29: generator
+* Plot started

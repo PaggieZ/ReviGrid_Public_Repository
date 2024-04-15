@@ -1,0 +1,9 @@
+* Grid Created
+   -COM13: houseload
+   -COM14: solartracker
+   -COM15: fan
+   -COM16: windturbine
+* Plot started
+* solartracker: trackOn
+* fan: autoOn
+* windturbine: trackOn

@@ -1,0 +1,89 @@
+* Grid Created
+   -COM1: windturbine
+   -COM22: generator
+   -COM23: solartracker
+   -COM24: fan
+   -COM28: houseload
+* Plot started
+* windturbine: getKW
+  > KW: 
+      0.00
+* windturbine: getAll
+  > Kilowatt capacity: 
+      290
+  > Current KW level: 
+      0.00
+  > Load allocated: 
+      0
+  > Difference between allocated and used KW: 
+      0.00
+  > Carbon value: 
+      0
+  > Renewability: 
+      1
+  > Current Power: 
+      0.00
+* windturbine: getAll
+  > Kilowatt capacity: 
+      290
+  > Current KW level: 
+      191.36
+  > Load allocated: 
+      0
+  > Difference between allocated and used KW: 
+      191.36
+  > Carbon value: 
+      0
+  > Renewability: 
+      1
+  > Current Power: 
+      38.27
+* generator: getAll
+  > Kilowatt capacity: 
+      1000
+  > Current KW level: 
+      0.00
+  > Load allocated: 
+      0
+  > Difference between allocated and used KW: 
+      0.00
+  > Carbon value: 
+      0.00
+  > Renewability: 
+      0
+  > Current Power: 
+      119.34
+* solartracker: getAll
+  > Kilowatt capacity: 
+      290
+  > Current KW level: 
+      218.00
+  > Load allocated: 
+      200
+  > Difference between allocated and used KW: 
+      18.00
+  > Carbon value: 
+      0
+  > Renewability: 
+      1
+  > Current Power: 
+      218.00
+* fan: getAll
+  > Kilowatt capacity: 
+      0
+  > Current KW level: 
+      0
+  > Load allocated: 
+      0
+  > Delta load: 
+      0
+  > Carbon value: 
+      0
+  > Renewability: 
+      -1
+  > Current power: 
+      0.00
+* houseload: lightAll
+* houseload: autoOn
+* solartracker: goHome
+* Plot paused
