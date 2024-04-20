@@ -12,6 +12,7 @@ classdef fanObj < handle
         SP % Serial port obj for communication
         status
         status50
+        time50 = datetime;
     end % properties (public)
 
 

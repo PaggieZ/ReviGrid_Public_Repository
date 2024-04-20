@@ -12,6 +12,7 @@ classdef houseObj < handle
         SP % Serial port obj for communication
         status % values returned from Arduino getAll()
         status50
+        time50 = datetime;
     end
 
     properties (Access = private)

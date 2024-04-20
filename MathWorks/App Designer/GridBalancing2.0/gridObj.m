@@ -153,10 +153,12 @@ classdef gridObj < handle
                 writematrix(currUnit.status, "statusData.xlsx", "Sheet", currUnit.ID, "writeMode", "append");
                 if numOfVal < 50
                     currUnit.status50(numOfVal + 1) = currUnit.status(4);
-                    
+                    currUnit.time50(numOfVal + 1) = currUnit.status(1);
                 else
                     currUnit.status50 = circshift(currUnit.status50, -1);
                     currUnit.status50(50) = currUnit.status(4);
+                    currUnit.time50 = circshift(currUnit.time50, -1);
+                    currUnit.time50(50) = currUnit.status(1);
                 end
                 
             end
